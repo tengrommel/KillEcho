@@ -138,10 +138,10 @@ func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
 func checkCookie(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(context echo.Context) error {
 		cookie, err := context.Cookie("sessionID")
-		if strings.Contains(err.Error(), "named cookie not present"){
-			return context.String(http.StatusUnauthorized, "you dont have any cookie")
-		}
 		if err != nil{
+			if strings.Contains(err.Error(), "named cookie not present"){
+				return context.String(http.StatusUnauthorized, "you dont have any cookie")
+			}
 			log.Println(err)
 			return err
 		}
