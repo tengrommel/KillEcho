@@ -143,6 +143,13 @@ func login(c echo.Context) error {
 			return c.String(http.StatusInternalServerError, "something went wrong")
 		}
 
+		jwtcookie := &http.Cookie{}
+		jwtcookie.Name = "JWTCookie"
+		jwtcookie.Value = token
+		jwtcookie.Expires = time.Now().Add(48 * time.Hour)
+
+		c.SetCookie(jwtcookie)
+
 		return c.JSON(http.StatusOK, map[string]string{
 			"message": "You were logged in!",
 			"token": token,
